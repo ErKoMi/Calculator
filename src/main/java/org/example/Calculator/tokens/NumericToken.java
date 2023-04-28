@@ -15,4 +15,9 @@ public class NumericToken extends Token {
     protected NumericToken solve() {
         return this;
     }
+
+    @Override
+    public String toString() {
+        return String.valueOf(getValue());
+    }
 }

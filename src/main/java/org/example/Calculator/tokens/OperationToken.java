@@ -1,6 +1,16 @@
 package org.example.Calculator.tokens;
 
 public abstract class OperationToken extends Token {
+    int priority = 0;
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public OperationToken(int priority){
+        this.priority = priority;
+    }
+
     @Override
     public NumericToken solve() {
         NumericToken left = leftChild.solve();
