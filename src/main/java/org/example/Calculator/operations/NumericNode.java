@@ -1,18 +1,18 @@
-package org.example.Calculator.tokens;
+package org.example.Calculator.operations;
 
-public class NumericToken extends Token {
+public class NumericNode extends Node {
     private double value;
 
     public double getValue() {
         return value;
     }
 
-    public NumericToken(double value){
+    public NumericNode(double value){
         this.value = value;
     }
 
     @Override
-    protected NumericToken solve() {
+    protected NumericNode solve() {
         return this;
     }
 

@@ -1,10 +1,10 @@
-package org.example.Calculator.tokens;
+package org.example.Calculator.operations;
 
-public abstract class Token {
-    Token leftChild;
-    Token rightChild;
+public abstract class Node {
+    Node leftChild;
+    Node rightChild;
 
-    protected abstract NumericToken solve();
+    protected abstract NumericNode solve();
 
     public void print(){
         if(leftChild != null)
