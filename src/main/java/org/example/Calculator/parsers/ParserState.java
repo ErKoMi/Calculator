@@ -15,7 +15,8 @@ public abstract class ParserState {
 
     protected void endParse(Token token, char c){
         parseStr = new StringBuilder();
-        parser.addToken(token);
+        if(token != null)
+            parser.addToken(token);
         ParserState next = null;
 
         if(c == '\0'){

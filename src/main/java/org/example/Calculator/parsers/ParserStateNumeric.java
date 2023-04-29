@@ -15,8 +15,13 @@ public class ParserStateNumeric extends ParserState {
         if(isDigit(c))
             parseStr.append(c);
         else{
-            NumericToken token = new NumericToken(Double.parseDouble(parseStr.toString()));
-            endParse(token, c);
+            if(parseStr.length() != 0){
+                NumericToken token = new NumericToken(Double.parseDouble(parseStr.toString()));
+                endParse(token, c);
+            }
+            else {
+                endParse(null, c);
+            }
         }
     }
 }

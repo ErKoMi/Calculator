@@ -1,5 +1,6 @@
 package org.example.Calculator.parsers;
 
+import org.example.Calculator.tokens.Operation;
 import org.example.Calculator.tokens.OperationToken;
 import org.example.Calculator.tokens.OperationTokenFactory;
 
@@ -12,11 +13,16 @@ public class ParserStateOperation extends ParserState {
 
     @Override
     public void add(char c) {
-        if (!isDigit(c)) {
-            parseStr.append(c);
-        } else {
-            OperationToken operationToken = OperationTokenFactory.tokenByString(parseStr.toString());
+        try{
+            Operation operation = Operation.byString(parseStr.toString());
+            OperationToken operationToken = OperationTokenFactory.tokenByOperation(operation);
             endParse(operationToken, c);
+        } catch (IllegalArgumentException e) {
+            if(isDigit(c)){
+                throw new UnsupportedOperationException("Unknown operation: \"" + parseStr.toString() + "\"");
+            }
+
+            parseStr.append(c);
         }
     }
 }
