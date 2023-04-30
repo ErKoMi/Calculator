@@ -1,8 +1,9 @@
 package org.example.Calculator.operations;
 
 public class CloseBracketNode extends OperationNode {
-    public CloseBracketNode(int priority) {
-        super(priority);
+
+    public CloseBracketNode() {
+        operation = Operation.CLOSEBRACKET;
     }
 
     @Override

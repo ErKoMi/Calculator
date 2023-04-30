@@ -1,8 +1,8 @@
 package org.example.Calculator.operations;
 
 public class DivideOperationNode extends OperationNode {
-    public DivideOperationNode(int priority) {
-        super(priority);
+    public DivideOperationNode() {
+        operation = Operation.DIVIDE;
     }
 
     @Override

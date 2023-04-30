@@ -1,8 +1,8 @@
 package org.example.Calculator.operations;
 
 public class OpenBracketNode extends OperationNode {
-    public OpenBracketNode(int priority) {
-        super(priority);
+    public OpenBracketNode() {
+        operation = Operation.OPENBRACKET;
     }
 
     @Override

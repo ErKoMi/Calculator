@@ -1,8 +1,8 @@
 package org.example.Calculator.operations;
 
-public class MinusOperationNode extends OperationNode {
-    public MinusOperationNode(int priority) {
-        super(priority);
+public class SubtractOperationNode extends OperationNode {
+    public SubtractOperationNode() {
+        operation = Operation.SUBTRACT;
     }
 
     @Override

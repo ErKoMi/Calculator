@@ -1,14 +1,10 @@
 package org.example.Calculator.operations;
 
 public abstract class OperationNode extends Node {
-    int priority = 0;
+    Operation operation;
 
-    public int getPriority() {
-        return priority;
-    }
-
-    public OperationNode(int priority){
-        this.priority = priority;
+    public Operation getOperation() {
+        return operation;
     }
 
     @Override

@@ -1,11 +1,11 @@
 package org.example;
 
-import org.example.Calculator.tokens.OperationToken;
+import org.example.Calculator.operations.OperationNode;
 
 public class Expression {
-    OperationToken rootToken;
+    OperationNode rootToken;
 
-    public Expression(OperationToken token){
+    public Expression(OperationNode token){
         rootToken = token;
     }
 

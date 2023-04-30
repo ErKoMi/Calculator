@@ -1,38 +1,21 @@
 package org.example.Calculator.operations;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
-
 public enum Operation {
-    OPENBRACKET("("),
-    CLOSEBRACKET(")"),
-    ADD("+"),
-    SUBTRACT("-"),
-    MULTIPLY("*"),
-    DIVIDE("/");
+    OPENBRACKET(0),
+    CLOSEBRACKET(0),
+    ADD(1),
+    SUBTRACT(1),
+    MULTIPLY(2),
+    DIVIDE(2);
 
-    private final String token;
+    private int priority;
 
-    Operation(String token) {
-        this.token = token;
+    Operation(int priority) {
+
+        this.priority = priority;
     }
 
-    public static boolean isOperation(String str){
-        return Arrays.stream(values()).anyMatch(v -> v.token.equals(str));
-    }
-
-    public static Operation byString(String str) {
-        for (Operation op : values()) {
-            if (op.token.equals(str)) {
-                return op;
-            }
-        }
-
-        throw new IllegalArgumentException();
-    }
-
-    public static List<String> getTokens() {
-        return Arrays.stream(values()).map(v -> v.token).collect(Collectors.toList());
+    public int getPriority() {
+        return priority;
     }
 }

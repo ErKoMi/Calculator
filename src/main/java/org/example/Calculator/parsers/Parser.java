@@ -1,6 +1,10 @@
 package org.example.Calculator.parsers;
 
-import org.example.Calculator.tokens.*;
+import org.example.Calculator.numberSystems.DecimalNumberSystem;
+import org.example.Calculator.numberSystems.INumberSystem;
+import org.example.Calculator.operations.*;
+import org.example.Calculator.tokens.Token;
+import org.example.Calculator.tokens.TokenType;
 import org.example.Expression;
 
 import java.util.ArrayList;
@@ -9,122 +13,120 @@ import java.util.HashMap;
 import java.util.Stack;
 
 public class Parser {
+    INumberSystem numberSystem;
 
-    static HashMap<Class<?>, Integer> priority = new HashMap<>();
-
-    ArrayList<Token> tokens = new ArrayList<>();
-
-    private ParserState state;
-
-    private final ParserStateOperation parserStateOperation = new ParserStateOperation(this);
-    private final ParserStateNumeric parserStateNumeric = new ParserStateNumeric(this);
-    private final EndParserState endParserState = new EndParserState(this);
-
-    public ParserStateOperation getParserStateOperation() {
-        return parserStateOperation;
+    public void setNumberSystem(INumberSystem numberSystem) {
+        this.numberSystem = numberSystem;
     }
 
-    public ParserStateNumeric getParserStateNumeric() {
-        return parserStateNumeric;
-    }
-
-    public EndParserState getEndParserState() {
-        return endParserState;
+    public INumberSystem getNumberSystem() {
+        return numberSystem;
     }
 
     public Parser() {
-        setState(new ParserStateNumeric(this));
-
-        priority.put(MinusOperationToken.class, 1);
-        priority.put(PlusOperationToken.class, 1);
+        numberSystem = new DecimalNumberSystem();
     }
 
-    void setState(ParserState state) {
-        this.state = state;
-    }
+    public Expression parse(String exprStr) {
+        exprStr = exprStr.replace(" ", "");
 
-    public void addToken(Token token) {
-        tokens.add(token);
-    }
-
-    public Expression parse(String exprStr) throws Exception {
-        state = getParserStateNumeric();
-        exprStr = exprStr.replace(" ", "") + "\0";
-        for (char c : exprStr.toCharArray()) {
-            state.add(c);
+        ArrayList<Token<TokenType>> tokens = Lexer.processingString(TokenType.class, exprStr);
+        OperationNode op;
+        try {
+            op = makeTree(tokens);
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Illegal Expression!");
         }
 
-        OperationToken root = makeTree();
-
-        return new Expression(root);
+        return new Expression(op);
     }
 
-    OperationToken makeTree() throws Exception {
-        OperationToken root;
+    OperationNode makeTree(ArrayList<Token<TokenType>> tokens) throws Exception {
+        OperationNode root;
 
-        Stack<Token> result = new Stack<>();
-        Stack<OperationToken> operations = new Stack<>();
+        Stack<Node> result = new Stack<>();
+        Stack<OperationNode> operations = new Stack<>();
 
-        for (Token token : tokens) {
-            if (token instanceof NumericToken) {
-                result.push(token);
-            } else if (token instanceof OpenBracketToken op) {
-                operations.push(op);
-            } else if (token instanceof CloseBracketToken oper) {
-
+        for (int i = 0; i < tokens.size(); i++) {
+            Token<TokenType> token = tokens.get(i);
+            Operation oper = null;
+            if (token.type() == TokenType.NUMBER) {
+                // TODO: 30.04.2023 Проверка соответствия текущей системе
+                double value = numberSystem.parse(token.value());
+                result.push(new NumericNode(value));
+            } else if (token.type() == TokenType.OPENBRACKET) {
+                operations.push(nodeByOperation(Operation.OPENBRACKET));
+            } else if (token.type() == TokenType.CLOSEBRACKET) {
+                
                 try {
-                    OperationToken tmp = operations.peek();
-                    while (tmp.getPriority() > oper.getPriority()) {
-                        tmp = operations.pop();
-                        tmp.setSecondOperand(result.pop()).setFirstOperand(result.pop());
-                        result.push(tmp);
-                        tmp = operations.peek();
-                    }
-                } catch (EmptyStackException ignored) {
+                    shiftWhile(result, operations, Operation.OPENBRACKET.getPriority() + 1);
+                } catch (EmptyStackException ex) {
                     throw new Exception("Количество закрывающих скобок не равно количеству открывающих!");
                 }
 
-                if (!operations.isEmpty() || operations.peek() instanceof OpenBracketToken) {
+                if (!operations.isEmpty() || operations.peek() instanceof OpenBracketNode) {
                     operations.pop();
                 } else {
                     throw new Exception("Количество закрывающих скобок не равно количеству открывающих!");
                 }
 
-            } else if (token instanceof OperationToken oper) {
+            } else if(token.type() == TokenType.PLUS){
+                oper =  Operation.ADD;
+            } else if(token.type() == TokenType.ASTERISK) {
+                oper = Operation.MULTIPLY;
+            } else if(token.type() == TokenType.SLASH) {
+                oper = Operation.DIVIDE;
+            } else if(token.type() == TokenType.MINUS) {
+                if(i > 0 && tokens.get(i - 1).type() == TokenType.NUMBER){
+                    oper = Operation.SUBTRACT;
+                } else {
+                    // TODO: 01.05.2023 Унарный минус
+                }
+            }
 
-                try {
-                    OperationToken tmp = operations.peek();
-                    while (tmp.getPriority() >= oper.getPriority()) {
-                        tmp = operations.pop();
-                        tmp.setSecondOperand(result.pop()).setFirstOperand(result.pop());
-                        result.push(tmp);
-                        tmp = operations.peek();
-                    }
-                } catch (EmptyStackException ignored) {
+            if(oper != null){
+                try{
+                    shiftWhile(result, operations, oper.getPriority());
+                } catch (EmptyStackException ignore){
 
                 }
-
-                operations.push(oper);
+                operations.push(nodeByOperation(oper));
             }
         }
 
-        while (!operations.isEmpty()) {
-            OperationToken tmp = operations.pop();
-            try {
-                tmp.setSecondOperand(result.pop()).setFirstOperand(result.pop());
-            } catch (EmptyStackException ex){
-                throw new IllegalArgumentException("Illegal expression!");
-            }
+        try{
+            shiftWhile(result, operations, -1);
+        } catch (EmptyStackException ignore){
 
-            result.push(tmp);
         }
 
-        root = (OperationToken) result.pop();
+        root = (OperationNode) result.pop();
 
-        if(!operations.isEmpty() || root == null){
+        if (!operations.isEmpty() || root == null) {
             throw new IllegalArgumentException("Illegal expression!");
         }
 
         return root;
+    }
+
+    private static void shiftWhile(Stack<Node> result, Stack<OperationNode> operations, int priority) throws EmptyStackException {
+        OperationNode tmp = operations.peek();
+        while (tmp.getOperation().getPriority() >= priority) {
+            tmp = operations.pop();
+            tmp.setSecondOperand(result.pop()).setFirstOperand(result.pop());
+            result.push(tmp);
+            tmp = operations.peek();
+        }
+    }
+
+    public static OperationNode nodeByOperation(Operation op){
+        return switch (op){
+            case OPENBRACKET -> new OpenBracketNode();
+            case CLOSEBRACKET -> new CloseBracketNode();
+            case ADD -> new AddOperationNode();
+            case SUBTRACT -> new SubtractOperationNode();
+            case MULTIPLY -> new MultiplyOperationNode();
+            case DIVIDE -> new DivideOperationNode();
+        };
     }
 }
