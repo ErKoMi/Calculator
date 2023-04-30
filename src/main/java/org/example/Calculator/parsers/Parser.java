@@ -35,7 +35,7 @@ public class Parser {
         try {
             op = makeTree(tokens);
         } catch (Exception e) {
-            throw new IllegalArgumentException("Illegal Expression!");
+            throw new IllegalArgumentException(e.getMessage());
         }
 
         return new Expression(op);
@@ -51,9 +51,13 @@ public class Parser {
             Token<TokenType> token = tokens.get(i);
             Operation oper = null;
             if (token.type() == TokenType.NUMBER) {
-                // TODO: 30.04.2023 Проверка соответствия текущей системе
-                double value = numberSystem.parse(token.value());
-                result.push(new NumericNode(value));
+                if(numberSystem.getPattern().matcher(token.value()).matches()){
+                    double value = numberSystem.parse(token.value());
+                    result.push(new NumericNode(value));
+                } else {
+                    throw new Exception("Недопустимое число! " + token.value());
+                }
+
             } else if (token.type() == TokenType.OPENBRACKET) {
                 operations.push(nodeByOperation(Operation.OPENBRACKET));
             } else if (token.type() == TokenType.CLOSEBRACKET) {

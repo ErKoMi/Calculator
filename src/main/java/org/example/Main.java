@@ -7,7 +7,7 @@ public class Main {
         Parser parser = new Parser();
         Expression expression = null;
         try {
-            expression = parser.parse("(10 + 5) * 4 / (2 + 2)");
+            expression = parser.parse("(10 + 5) * 4 / (2A + 2BD)");
             expression.print();
             System.out.println(expression.solve());
         } catch (Exception e) {
