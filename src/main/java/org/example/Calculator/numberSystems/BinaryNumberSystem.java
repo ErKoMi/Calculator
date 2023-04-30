@@ -1,9 +1,15 @@
 package org.example.Calculator.numberSystems;
 
+import java.text.NumberFormat;
 import java.util.regex.Pattern;
 
-public class DecimalNumberSystem implements INumberSystem {
-    static Pattern pattern = Pattern.compile("^-?\\d+([,.]\\d+)?$");
+public class BinaryNumberSystem implements INumberSystem {
+    Pattern pattern;
+
+    public BinaryNumberSystem(){
+        pattern = Pattern.compile("^[0-1]*$");
+    }
+
     @Override
     public Pattern getPattern() {
         return pattern;
@@ -11,11 +17,11 @@ public class DecimalNumberSystem implements INumberSystem {
 
     @Override
     public double parse(String value) throws NumberFormatException {
-        return Double.parseDouble(value);
+        return 0;
     }
 
     @Override
     public String toString(double value) {
-        return String.valueOf(value);
+        return null;
     }
 }
