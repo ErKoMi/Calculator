@@ -4,6 +4,6 @@ import java.util.regex.Pattern;
 
 public interface INumberSystem {
     Pattern getPattern();
-    double parse(String value) throws NumberFormatException;
-    String toString(double value);
+    int parse(String value) throws NumberFormatException;
+    String toString(int value);
 }

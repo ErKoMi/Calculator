@@ -1,13 +1,13 @@
 package org.example.Calculator.operations;
 
 public class NumericNode extends Node {
-    private double value;
+    private int value;
 
-    public double getValue() {
+    public int getValue() {
         return value;
     }
 
-    public NumericNode(double value){
+    public NumericNode(int value){
         this.value = value;
     }
 

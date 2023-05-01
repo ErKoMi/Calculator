@@ -2,6 +2,7 @@ package org.example.Calculator.parsers;
 
 import org.example.Calculator.numberSystems.DecimalNumberSystem;
 import org.example.Calculator.numberSystems.INumberSystem;
+import org.example.Calculator.numberSystems.NumberSystems;
 import org.example.Calculator.operations.*;
 import org.example.Calculator.tokens.Token;
 import org.example.Calculator.tokens.TokenType;
@@ -24,7 +25,7 @@ public class Parser {
     }
 
     public Parser() {
-        numberSystem = new DecimalNumberSystem();
+        numberSystem = NumberSystems.DECIMAL;
     }
 
     public Expression parse(String exprStr) {
@@ -52,7 +53,7 @@ public class Parser {
             Operation oper = null;
             if (token.type() == TokenType.NUMBER) {
                 if(numberSystem.getPattern().matcher(token.value()).matches()){
-                    double value = numberSystem.parse(token.value());
+                    int value = numberSystem.parse(token.value());
                     result.push(new NumericNode(value));
                 } else {
                     throw new Exception("Недопустимое число! " + token.value());

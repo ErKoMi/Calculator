@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.Calculator.numberSystems.NumberSystems;
 import org.example.Calculator.parsers.Parser;
 
 public class Main {
@@ -7,7 +8,8 @@ public class Main {
         Parser parser = new Parser();
         Expression expression = null;
         try {
-            expression = parser.parse("10 + -5");
+            parser.setNumberSystem(NumberSystems.HEX);
+            expression = parser.parse("F + F");
             expression.print();
             System.out.println(expression.solve());
         } catch (Exception e) {

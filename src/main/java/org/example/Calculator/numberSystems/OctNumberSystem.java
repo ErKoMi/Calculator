@@ -2,22 +2,19 @@ package org.example.Calculator.numberSystems;
 
 import java.util.regex.Pattern;
 
-public class DecimalNumberSystem implements INumberSystem {
-    static Pattern pattern = Pattern.compile("^-?\\d+$");
-
-    DecimalNumberSystem(){};
+public class OctNumberSystem implements INumberSystem {
     @Override
     public Pattern getPattern() {
-        return pattern;
+        return null;
     }
 
     @Override
     public int parse(String value) throws NumberFormatException {
-        return Integer.parseInt(value);
+        return 0;
     }
 
     @Override
     public String toString(int value) {
-        return String.valueOf(value);
+        return null;
     }
 }

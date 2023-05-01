@@ -6,8 +6,8 @@ import java.util.regex.Pattern;
 public class BinaryNumberSystem implements INumberSystem {
     Pattern pattern;
 
-    public BinaryNumberSystem(){
-        pattern = Pattern.compile("^[0-1]*$");
+    BinaryNumberSystem(){
+        pattern = Pattern.compile("^-?[01]*$");
     }
 
     @Override
@@ -16,12 +16,12 @@ public class BinaryNumberSystem implements INumberSystem {
     }
 
     @Override
-    public double parse(String value) throws NumberFormatException {
-        return 0;
+    public int parse(String value) throws NumberFormatException {
+        return Integer.parseInt(value, 2);
     }
 
     @Override
-    public String toString(double value) {
-        return null;
+    public String toString(int value) {
+        return Integer.toBinaryString(value);
     }
 }
