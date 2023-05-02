@@ -5,7 +5,7 @@ import org.example.Calculator.numberSystems.NumberSystems;
 import org.example.Calculator.nodes.*;
 import org.example.Calculator.tokens.Token;
 import org.example.Calculator.tokens.TokenType;
-import org.example.Expression;
+import org.example.Calculator.Expression;
 
 import java.util.ArrayList;
 import java.util.EmptyStackException;
@@ -26,10 +26,7 @@ public class Parser {
         numberSystem = NumberSystems.DECIMAL;
     }
 
-    public Expression parse(String exprStr) {
-        exprStr = exprStr.replace(" ", "");
-
-        ArrayList<Token<TokenType>> tokens = Lexer.processingString(TokenType.class, exprStr);
+    public Expression parse(ArrayList<Token<TokenType>> tokens) {
         OperationNode op;
         try {
             op = makeTree(tokens);
