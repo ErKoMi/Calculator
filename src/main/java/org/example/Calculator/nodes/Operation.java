@@ -7,7 +7,8 @@ public enum Operation {
     SUBTRACT(1, 2),
     MULTIPLY(2, 2),
     DIVIDE(2, 2),
-    INVERT(3, 1);
+    INVERT(3, 1),
+    POW(4, 2);
 
     private final int priority;
     private final int countArgs;

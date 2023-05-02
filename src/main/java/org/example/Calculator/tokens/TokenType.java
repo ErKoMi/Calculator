@@ -10,7 +10,8 @@ public enum TokenType implements ITokenType {
     PLUS("\\+"),
     MINUS("\\-"),
     ASTERISK("\\*"),
-    SLASH("\\/");
+    SLASH("\\/"),
+    CIRCUMFLEX("\\^");
 
 
     private final Pattern pattern;

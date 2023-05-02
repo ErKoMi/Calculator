@@ -9,7 +9,7 @@ public class Main {
         Expression expression = null;
         try {
             parser.setNumberSystem(NumberSystems.DECIMAL);
-            expression = parser.parse("10 + 5 * ((4 - 2) * (2 + 3) - 1)");
+            expression = parser.parse("(10 - 2) ^ 2");
             expression.print();
             System.out.println(expression.solve());
         } catch (Exception e) {

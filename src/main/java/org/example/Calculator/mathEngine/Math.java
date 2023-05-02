@@ -17,6 +17,7 @@ public class Math {
             case MULTIPLY -> args[0] * args[1];
             case DIVIDE -> args[0] / args[1];
             case INVERT -> -1 * args[0];
+            case POW -> (int)java.lang.Math.pow(args[0], args[1]);
             default -> throw new UnsupportedOperationException();
         };
     }

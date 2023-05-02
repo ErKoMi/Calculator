@@ -85,6 +85,8 @@ public class Parser {
                 } else {
                     oper = Operation.INVERT;
                 }
+            } else if (token.type() == TokenType.CIRCUMFLEX) {
+                oper = Operation.POW;
             }
 
             if(oper != null){
