@@ -7,7 +7,7 @@ public class BinaryNumberSystem implements INumberSystem {
     Pattern pattern;
 
     BinaryNumberSystem(){
-        pattern = Pattern.compile("^-?[01]*$");
+        pattern = Pattern.compile("^[01]*$");
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.util.regex.Pattern;
 
 public enum TokenType implements ITokenType {
 
-    NUMBER("\\-?[0-9A-Z]+"),
+    NUMBER("[0-9A-Z]+"),
     OPENBRACKET("\\("),
     CLOSEBRACKET("\\)"),
     PLUS("\\+"),

@@ -1,6 +1,6 @@
 package org.example;
 
-import org.example.Calculator.operations.OperationNode;
+import org.example.Calculator.nodes.OperationNode;
 
 public class Expression {
     OperationNode rootToken;
@@ -14,7 +14,6 @@ public class Expression {
     }
 
     public void print(){
-        rootToken.print();
-        System.out.println();
+        System.out.println(rootToken.toString());
     }
 }

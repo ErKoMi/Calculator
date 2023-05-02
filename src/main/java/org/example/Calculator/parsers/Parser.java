@@ -1,16 +1,14 @@
 package org.example.Calculator.parsers;
 
-import org.example.Calculator.numberSystems.DecimalNumberSystem;
 import org.example.Calculator.numberSystems.INumberSystem;
 import org.example.Calculator.numberSystems.NumberSystems;
-import org.example.Calculator.operations.*;
+import org.example.Calculator.nodes.*;
 import org.example.Calculator.tokens.Token;
 import org.example.Calculator.tokens.TokenType;
 import org.example.Expression;
 
 import java.util.ArrayList;
 import java.util.EmptyStackException;
-import java.util.HashMap;
 import java.util.Stack;
 
 public class Parser {
@@ -60,7 +58,7 @@ public class Parser {
                 }
 
             } else if (token.type() == TokenType.OPENBRACKET) {
-                operations.push(nodeByOperation(Operation.OPENBRACKET));
+                operations.push(new OperationNode(Operation.OPENBRACKET));
             } else if (token.type() == TokenType.CLOSEBRACKET) {
                 
                 try {
@@ -69,7 +67,7 @@ public class Parser {
                     throw new Exception("Количество закрывающих скобок не равно количеству открывающих!");
                 }
 
-                if (!operations.isEmpty() || operations.peek() instanceof OpenBracketNode) {
+                if (!operations.isEmpty() || operations.peek().getOperation() == Operation.OPENBRACKET) {
                     operations.pop();
                 } else {
                     throw new Exception("Количество закрывающих скобок не равно количеству открывающих!");
@@ -82,7 +80,7 @@ public class Parser {
             } else if(token.type() == TokenType.SLASH) {
                 oper = Operation.DIVIDE;
             } else if(token.type() == TokenType.MINUS) {
-                if(i > 0 && tokens.get(i - 1).type() == TokenType.NUMBER){
+                if(i > 0 && tokens.get(i - 1).type() == TokenType.NUMBER || tokens.get(i - 1).type() == TokenType.CLOSEBRACKET){
                     oper = Operation.SUBTRACT;
                 } else {
                     // TODO: 01.05.2023 Унарный минус
@@ -95,7 +93,7 @@ public class Parser {
                 } catch (EmptyStackException ignore){
 
                 }
-                operations.push(nodeByOperation(oper));
+                operations.push(new OperationNode(oper));
             }
         }
 
@@ -103,6 +101,10 @@ public class Parser {
             shiftWhile(result, operations, -1);
         } catch (EmptyStackException ignore){
 
+        }
+
+        if(result.size() != 1){
+            throw new IllegalArgumentException("Illegal expression!");
         }
 
         root = (OperationNode) result.pop();
@@ -118,20 +120,18 @@ public class Parser {
         OperationNode tmp = operations.peek();
         while (tmp.getOperation().getPriority() >= priority) {
             tmp = operations.pop();
-            tmp.setSecondOperand(result.pop()).setFirstOperand(result.pop());
+            setOperands(result, tmp);
             result.push(tmp);
             tmp = operations.peek();
         }
     }
 
-    public static OperationNode nodeByOperation(Operation op){
-        return switch (op){
-            case OPENBRACKET -> new OpenBracketNode();
-            case CLOSEBRACKET -> new CloseBracketNode();
-            case ADD -> new AddOperationNode();
-            case SUBTRACT -> new SubtractOperationNode();
-            case MULTIPLY -> new MultiplyOperationNode();
-            case DIVIDE -> new DivideOperationNode();
-        };
+    private static void setOperands(Stack<Node> operands, OperationNode operationNode){
+        Node[] tmp = new Node[operationNode.getOperation().getCountArgs()];
+        for(int i = tmp.length - 1; i >= 0; i--){
+            tmp[i] = operands.pop();
+        }
+
+        operationNode.setOperands(tmp);
     }
 }

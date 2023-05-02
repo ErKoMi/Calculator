@@ -3,18 +3,24 @@ package org.example.Calculator.numberSystems;
 import java.util.regex.Pattern;
 
 public class OctNumberSystem implements INumberSystem {
+    Pattern pattern;
+
+    OctNumberSystem(){
+        pattern = Pattern.compile("^[0-7]*$");
+    }
+
     @Override
     public Pattern getPattern() {
-        return null;
+        return pattern;
     }
 
     @Override
     public int parse(String value) throws NumberFormatException {
-        return 0;
+        return Integer.parseInt(value, 8);
     }
 
     @Override
     public String toString(int value) {
-        return null;
+        return Integer.toOctalString(value);
     }
 }

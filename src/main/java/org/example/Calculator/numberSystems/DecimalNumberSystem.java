@@ -3,7 +3,7 @@ package org.example.Calculator.numberSystems;
 import java.util.regex.Pattern;
 
 public class DecimalNumberSystem implements INumberSystem {
-    static Pattern pattern = Pattern.compile("^-?\\d+$");
+    static Pattern pattern = Pattern.compile("^\\d+$");
 
     DecimalNumberSystem(){};
     @Override

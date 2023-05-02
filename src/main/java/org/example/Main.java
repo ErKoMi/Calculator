@@ -8,8 +8,8 @@ public class Main {
         Parser parser = new Parser();
         Expression expression = null;
         try {
-            parser.setNumberSystem(NumberSystems.HEX);
-            expression = parser.parse("F + F");
+            parser.setNumberSystem(NumberSystems.DECIMAL);
+            expression = parser.parse("10 + 5 * ((4 - 2) * (2 + 3) - 1)");
             expression.print();
             System.out.println(expression.solve());
         } catch (Exception e) {

@@ -1,7 +1,7 @@
-package org.example.Calculator.operations;
+package org.example.Calculator.nodes;
 
-public class NumericNode extends Node {
-    private int value;
+public class NumericNode extends ValueNode {
+    private final int value;
 
     public int getValue() {
         return value;
