@@ -16,6 +16,7 @@ public class Math {
             case SUBTRACT -> args[0] - args[1];
             case MULTIPLY -> args[0] * args[1];
             case DIVIDE -> args[0] / args[1];
+            case INVERT -> -1 * args[0];
             default -> throw new UnsupportedOperationException();
         };
     }

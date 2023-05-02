@@ -80,10 +80,10 @@ public class Parser {
             } else if(token.type() == TokenType.SLASH) {
                 oper = Operation.DIVIDE;
             } else if(token.type() == TokenType.MINUS) {
-                if(i > 0 && tokens.get(i - 1).type() == TokenType.NUMBER || tokens.get(i - 1).type() == TokenType.CLOSEBRACKET){
+                if(i > 0 && (tokens.get(i - 1).type() == TokenType.NUMBER || tokens.get(i - 1).type() == TokenType.CLOSEBRACKET)){
                     oper = Operation.SUBTRACT;
                 } else {
-                    // TODO: 01.05.2023 Унарный минус
+                    oper = Operation.INVERT;
                 }
             }
 

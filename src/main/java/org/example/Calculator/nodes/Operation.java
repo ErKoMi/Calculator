@@ -6,10 +6,11 @@ public enum Operation {
     ADD(1, 2),
     SUBTRACT(1, 2),
     MULTIPLY(2, 2),
-    DIVIDE(2, 2);
+    DIVIDE(2, 2),
+    INVERT(3, 1);
 
-    private int priority;
-    private int countArgs;
+    private final int priority;
+    private final int countArgs;
 
     Operation(int priority, int countArgs) {
 
