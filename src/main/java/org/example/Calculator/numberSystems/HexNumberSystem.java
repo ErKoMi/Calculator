@@ -25,7 +25,7 @@ public class HexNumberSystem implements INumberSystem {
 
     @Override
     public String toString(int value) {
-        return Integer.toOctalString(value);
+        return Integer.toHexString(value);
     }
 
     @Override
