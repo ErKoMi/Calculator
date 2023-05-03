@@ -7,6 +7,7 @@ import java.util.regex.Pattern;
 public class HexNumberSystem implements INumberSystem {
 
     Pattern pattern;
+    int radix = 16;
 
     HexNumberSystem() {
         pattern = Pattern.compile("^[0-9A-F]+$");
@@ -19,11 +20,16 @@ public class HexNumberSystem implements INumberSystem {
 
     @Override
     public int parse(String value) throws NumberFormatException {
-        return Integer.parseInt(value, 16);
+        return Integer.parseInt(value, radix);
     }
 
     @Override
     public String toString(int value) {
         return Integer.toOctalString(value);
+    }
+
+    @Override
+    public int getRadix() {
+        return radix;
     }
 }

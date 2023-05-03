@@ -5,9 +5,9 @@ public class MenuItem {
     onExecuteMenuItemListener listener;
     onCanExecuteMenuItemListener canExecuteListener;
 
-    public void execute() {
+    public void execute(String[] args) throws Exception {
         if(canExecuteListener != null && listener != null && canExecuteListener.onCanExecute())
-            listener.onExecuteMenuItem();
+            listener.onExecuteMenuItem(args);
     }
 
     public boolean canExecute(){
@@ -24,7 +24,7 @@ public class MenuItem {
     }
 
     public interface onExecuteMenuItemListener {
-        void onExecuteMenuItem();
+        void onExecuteMenuItem(String[] args) throws Exception;
     }
 
     public interface onCanExecuteMenuItemListener {
