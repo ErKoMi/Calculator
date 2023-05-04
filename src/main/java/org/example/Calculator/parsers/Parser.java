@@ -102,7 +102,7 @@ public class Parser {
 
         }
 
-        if(result.size() != 1){
+        if(result.size() != 1 || !(result.peek() instanceof OperationNode)){
             throw new IllegalArgumentException("Illegal expression!");
         }
 

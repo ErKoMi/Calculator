@@ -1,9 +1,6 @@
 package org.example.menu;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Scanner;
+import java.util.*;
 
 public class Menu {
     public static final String ANSI_GREEN = "\u001B[32m";
@@ -35,8 +32,12 @@ public class Menu {
         while (run) {
             show();
 
-            String command = in.nextLine().trim();
-            execute(command);
+            try {
+                String command = in.nextLine().trim();
+                execute(command);
+            } catch (NoSuchElementException ex){
+                exit();
+            }
         }
     }
 

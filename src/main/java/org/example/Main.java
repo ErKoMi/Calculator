@@ -35,7 +35,7 @@ public class Main {
                         return;
                     }
 
-                    calculator.setNumSystem(NumberSystems.fromString(a[0]));
+                    calculator.setNumSystem(NumberSystems.fromString(a[0].toUpperCase()));
                     menu.setStatus("Текущая система счисления: " + calculator.getNumSystem().getRadix());
                 },
                 () -> true ));
